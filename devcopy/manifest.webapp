@@ -1,0 +1,14 @@
+{
+	"version": "1.2",
+	"name":"Geolocalizador",
+	"description": "Geolocalizador en FirefoxOS",
+	"lauch_path": "https://www.googledrive.com/host/0Bz8w1zDlHyx_SEF0NDBIYmdPUEU/Geolocalizador.zip",
+	"icons":{
+		"16": "/ico_16.png",
+		"48": "/ico_48.png",
+		"128": "/ico_128.png"
+	},
+	"developer":{
+		"name": "Laura del Pino Diaz - Proyecto para el curso Desarrollo en HTML5, CSS y Javascript de WebApps"
+	}
+}
