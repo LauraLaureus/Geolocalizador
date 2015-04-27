@@ -1,26 +1,33 @@
 body{
   font-family: 'Droid Sans', 'Helvetica', Arial, sans-serif;
+  text-align:center;
 }
 
-#latlng{
-  display: block;
-  margin: 0;
-  padding: 0;
-  position: absolute; /* posición absoluta a navegador */
-  top: 0;             /* ajusta a borde de navegador */
-  left: 0;
-  right: 0;
-  height: 50px;
+#toolbar{
+	background-color:#FFCCCC;
+	padding: 2% 2% 2% 2%;
+	border-radius:2% 2% 2% 2%;
+	margin-bottom:2%;
 }
 
 #map{
   display: block;
-  margin: 0;
-  padding: 0;
-  position: absolute; /* posición absoluta a navegador */
-  top: 50px;      /* 50px debajo de borde de navegador */
-  left: 0;        /* ajusta a borde de navegador */
-  right: 0;
-  bottom: 0;
-  background: rgba(0,255,0,0.5); /* verde si no hay mapa */
+  position: relative; /* posición absoluta a navegador */
+  width:80%;
+  height:600px;
+  float:left;
+  background:#FFCCCC; /* verde si no hay mapa */
+  border-style:solid;
+  border-color:black;
+  margin-left:1%;
+}
+
+aside{
+	width:90%;
+	background-color:#FFCCCC;
+	padding: 2% 2% 2% 2%;
+	border-radius:2% 2% 2% 2%;
+	float:left;
+	color:white;
+	width:10%;
 }

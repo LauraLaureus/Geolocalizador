@@ -9,7 +9,24 @@
   <link rel="stylesheet" type="text/css" href="mypath.css" />
   <script type="text/javascript">
     var map, lat, lng;
+	
+	var route = {
+		historical:[],
+		addPosition:function (lat,lng){
+			this.historical.push([lat,lng]);
+		},
+		getStartAndEnd:function(){
+			var first = this.historical[0];
+			var last = this.historical[this.historical.length -1];
+			return [first,last];
+		},		
+		compact:function(){
+			this.historical=this.getStartAndEnd();
+		}
+	};
 
+	
+	
     $(function(){
 
       function enlazarMarcador(e){
@@ -27,7 +44,8 @@
 
         lat = e.latLng.lat();   // guarda coords para marca siguiente
         lng = e.latLng.lng();
-
+		route.addPosition(lat,lng);
+		
         map.addMarker({ lat: lat, lng: lng});  // pone marcador en mapa
       };
 
@@ -36,7 +54,7 @@
           success: function(position){
             lat = position.coords.latitude;  // guarda coords en lat y lng
             lng = position.coords.longitude;
-
+			route.addPosition(lat,lng);
             map = new GMaps({  // muestra mapa centrado en coords [lat, lng]
               el: '#map',
               lat: lat,
@@ -49,15 +67,62 @@
           error: function(error) { alert('Geolocalización falla: '+error.message); },
           not_supported: function(){ alert("Su navegador no soporta geolocalización"); },
         });
+		
       };
+	  
+	  this.compact = function (){
+		var newPoints = route.getStartAndEnd();
+		var start = newPoints[0];
+		if(!start[0]){return ;}
+		var end = newPoints[1];
+		
+		
+            map = new GMaps({  // muestra mapa centrado en coords [lat, lng]
+              el: '#map',
+              lat: start[0],
+              lng: start[1],
+              click: enlazarMarcador,
+              tap: enlazarMarcador
+            });
+			map.addMarker({ lat: start[0], lng: start[1]});
+			map.addMarker({ lat: end[0], lng: end[1]});
+      	
+		
+			map.drawRoute({
+				origin:start,
+				destination:end,
+				travelMode:'driving',
+				strokeColor:'#33CC33',
+				strokeOpacity:0.6,
+				strokeWeight:5,
+			});
+			route.compact();
+	  }
 
       geolocalizar();
+	  $("#compactar").on('tap', compact);
+	  $ ("#compactar").on('click', compact);
+	  
+	  if(!navigator.geolocation){
+		$('#map').html("<p>No se puede geolocalizar su dispositivo</p>");
+		alert("No se puede geolocalizar su dispositivo");
+	  }
     });
   </script>
 </head>
 <body>
   <h1>Geolocalización</h1>
-
+	<div id ="toolbar">
+	<button id="compactar" onClick="javascript:compact()"> Compactar </button>
+  </div>
+  <aside>
+	Instrucciones:
+	<ul>
+	<li> Por cada toque se pondrá un marcador.</li>
+	<li> Use el botón compactar para dibujar el camino entre el primer punto y el último.</li>
+	</ul>
+  </aside>
+  
   <div id="map"></div>
 </body>
 </html>
